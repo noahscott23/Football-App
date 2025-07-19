@@ -4,20 +4,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0f172a;      /* Dark blue background */
-  --color-secondary: #1e293b;    /* Slightly lighter blue */
-  --color-accent: #3b82f6;       /* Bright blue accent */
-  --color-light: #64748b;        /* Light blue-gray */
-  --color-lighter: #94a3b8;      /* Lighter blue-gray */
-  --color-lightest: #cbd5e1;     /* Very light blue-gray */
-  --color-white: #f8fafc;        /* Off-white */
+  --color-primary: #0f172a;      /* dark blue background */
+  --color-secondary: #1e293b;    /* lighter blue */
+  --color-accent: #3b82f6;       /* bright blue accent */
+  --color-light: #64748b;        /* light blue-gray */
+  --color-lighter: #64748b;      /* blue-gray or 94a3b8*/
+  --color-lightest: #cbd5e1;     /* very light blue-gray */
+  --color-white: #f8fafc;        /* off white */
 
-  --color-light-100: #cbd5e1;    /* Light blue-gray */
-  --color-light-200: #94a3b8;    /* Medium blue-gray */
+  --color-light-100: #64748b;    /* light blue-gray */
+  --color-light-200: #94a3b8;    /* medium blue-gray */
 
-  --color-gray-100: #64748b;     /* Blue-gray */
+  --color-gray-100: #64748b;     
 
-  --color-dark-100: #1e293b;     /* Dark blue */
+  --color-dark-100: #1e293b;     /* dark blue */
 
   --font-dm-sans: DM Sans, sans-serif;
 
@@ -61,7 +61,7 @@
   }
 
   .wrapper {
-    @apply px-5 py-12 xs:p-10 max-w-7xl mx-auto flex flex-col relative z-10;
+    @apply px-4 py-12 xs:p-10 max-w-7xl mx-auto flex flex-col relative z-10;
   }
 
   .trending {
@@ -122,6 +122,39 @@
   font-size: 190px;
   font-family: "Bebas Neue", sans-serif;
   color: #0a2145;
+}
+
+@utility site-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 4rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 25%, #7c3aed 50%, #3b82f6 75%, #1d4ed8 100%);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+  animation: gradient-shift 3s ease-in-out infinite, glow-pulse 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.3));
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes glow-pulse {
+  0% {
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.3));
+  }
+  100% {
+    filter: drop-shadow(0 0 40px rgba(59, 130, 246, 0.6));
+  }
 }
 
 @utility hide-scrollbar {
