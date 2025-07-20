@@ -20,7 +20,7 @@ const Home = () => {
   const [trendingPlayersLoading, setTrendingPlayersLoading] = useState(false);
   const [trendingPlayersError, setTrendingPlayersError] = useState('');
 
-  // getting all players from api once
+  // getting all players from api
   const fetchAllPlayers = async () => {
     setIsLoading(true);
     setErrorMessage('');
@@ -74,7 +74,6 @@ const Home = () => {
     setTrendingPlayersError('');
     try {
       const searchData = await getTrendingPlayers();
-      // map for fast lookup
       const playerMap = new Map((players || playerList).map(p => [String(p.id), p]));
       const trendingPlayerData = [];
       for (const searchItem of searchData) {
@@ -138,7 +137,7 @@ const Home = () => {
                         alt={player.fullName} 
                         className="w-[127px] h-[163px] rounded-lg object-cover -ml-3.5"
                         onError={(e) => {
-                          e.target.src = '/no-player.png'; // Fallback image
+                          e.target.src = '/no-player.png'; 
                         }}
                       />
                     </Link>
@@ -165,7 +164,7 @@ const Home = () => {
                         alt={player.fullName}
                         className="w-24 h-24 rounded-full object-cover"
                         onError={(e) => {
-                          e.target.src = '/no-player.png'; // Fallback image
+                          e.target.src = '/no-player.png'; 
                         }}
                       />
                       <div className="flex-1">

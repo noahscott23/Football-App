@@ -7,6 +7,7 @@ const API_BASE_URL = 'https://sports.core.api.espn.com/v2/sports/football/league
 function PlayerStats() {
   const { id } = useParams();
   const [playerData, setPlayerData] = useState(null);
+  const [playerStats, setPlayerStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -23,7 +24,7 @@ function PlayerStats() {
         
         const data = await response.json();
         
-        // Extract relevant player information
+        // gets relevant player information
         const player = {
           id: data.id,
           name: data.fullName,
@@ -38,6 +39,13 @@ function PlayerStats() {
         };
 
         setPlayerData(player);
+
+        // fetch player statistics
+        const statsResponse = await fetch(`https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/${id}/stats`);
+        if (statsResponse.ok) {
+          const statsData = await statsResponse.json();
+          setPlayerStats(statsData);
+        }
       } catch (err) {
         console.error('Error fetching player data:', err);
         setError('Failed to load player data. Please try again.');
@@ -51,7 +59,7 @@ function PlayerStats() {
     }
   }, [id]);
 
-  // Determine position category for stats display
+  // gets position category for stats display
   const getPositionCategory = (position) => {
     const offensivePositions = ['QB', 'RB', 'WR', 'TE', 'C', 'G', 'T', 'OT', 'OG', 'OL'];
     const defensivePositions = ['DE', 'DT', 'NT', 'LB', 'OLB', 'ILB', 'MLB', 'CB', 'S', 'SS', 'FS', 'DB'];
@@ -62,6 +70,27 @@ function PlayerStats() {
     if (specialTeamsPositions.includes(position)) return 'special';
     
     return 'unknown';
+  };
+
+  // function to format stats data
+  const formatStatsData = (category) => {
+    if (!category || !category.statistics) return null;
+    
+    const seasons = category.statistics
+      .filter(stat => !stat.displayName?.includes('Totals')) 
+      .map(stat => ({
+        year: stat.season.year,
+        team: stat.teamSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        stats: stat.stats,
+        position: stat.position
+      }));
+    
+    return {
+      labels: category.labels,
+      displayNames: category.displayNames,
+      seasons,
+      totals: category.totals
+    };
   };
 
   if (loading) {
@@ -139,7 +168,7 @@ function PlayerStats() {
         </header>
         
         <main className="py-8">
-          {/* Player Header */}
+          {/* player header */}
           <div className="bg-dark-100 p-8 rounded-lg mb-8">
             <div className="flex items-center space-x-6">
               <img 
@@ -162,7 +191,7 @@ function PlayerStats() {
             </div>
           </div>
 
-          {/* Position Information */}
+          {/* position info */}
           <div className="bg-dark-100 p-6 rounded-lg mb-6">
             <h3 className="text-xl font-semibold mb-4">Position Analysis</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -181,196 +210,84 @@ function PlayerStats() {
             </div>
           </div>
 
-          {/* Stats Section - Position Preview */}
+          
           <div className="bg-dark-100 p-6 rounded-lg">
-            <h3 className="text-xl font-semibold mb-4">Statistics Preview</h3>
-            <p className="text-gray-300 mb-4">
-              The following statistics will be displayed for {playerData.position} players:
-            </p>
+            <h3 className="text-xl font-semibold mb-4">Career Statistics</h3>
             
-            {positionCategory === 'offensive' && (
-              <div className="space-y-4">
-                {playerData.position === 'QB' && (
-                  <div className="bg-dark-200 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-blue-400 mb-2">Quarterback Stats</h4>
-                    <ul className="text-gray-300 space-y-1">
-                      <li>• Passing Yards</li>
-                      <li>• Passing Touchdowns</li>
-                      <li>• Interceptions</li>
-                      <li>• Completion Percentage</li>
-                      <li>• Passer Rating</li>
-                      <li>• Rushing Yards</li>
-                      <li>• Rushing Touchdowns</li>
-                    </ul>
-                  </div>
-                )}
+            {playerStats ? (
+              <div className="space-y-6">
+
                 
-                {playerData.position === 'RB' && (
-                  <div className="bg-dark-200 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-blue-400 mb-2">Running Back Stats</h4>
-                    <ul className="text-gray-300 space-y-1">
-                      <li>• Rushing Yards</li>
-                      <li>• Rushing Touchdowns</li>
-                      <li>• Yards Per Carry</li>
-                      <li>• Receptions</li>
-                      <li>• Receiving Yards</li>
-                      <li>• Receiving Touchdowns</li>
-                      <li>• Fumbles</li>
-                    </ul>
-                  </div>
-                )}
-                
-                {playerData.position === 'WR' && (
-                  <div className="bg-dark-200 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-blue-400 mb-2">Wide Receiver Stats</h4>
-                    <ul className="text-gray-300 space-y-1">
-                      <li>• Receptions</li>
-                      <li>• Receiving Yards</li>
-                      <li>• Receiving Touchdowns</li>
-                      <li>• Yards Per Reception</li>
-                      <li>• Targets</li>
-                      <li>• Catch Percentage</li>
-                      <li>• Longest Reception</li>
-                    </ul>
-                  </div>
-                )}
-                
-                {playerData.position === 'TE' && (
-                  <div className="bg-dark-200 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-blue-400 mb-2">Tight End Stats</h4>
-                    <ul className="text-gray-300 space-y-1">
-                      <li>• Receptions</li>
-                      <li>• Receiving Yards</li>
-                      <li>• Receiving Touchdowns</li>
-                      <li>• Yards Per Reception</li>
-                      <li>• Targets</li>
-                      <li>• Blocking Grades</li>
-                      <li>• Red Zone Targets</li>
-                    </ul>
-                  </div>
-                )}
-                
-                {['C', 'G', 'T', 'OT', 'OG', 'OL'].includes(playerData.position) && (
-                  <div className="bg-dark-200 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-blue-400 mb-2">Offensive Line Stats</h4>
-                    <ul className="text-gray-300 space-y-1">
-                      <li>• Games Started</li>
-                      <li>• Sacks Allowed</li>
-                      <li>• Penalties</li>
-                      <li>• Blocking Grades</li>
-                      <li>• Run Blocking</li>
-                      <li>• Pass Protection</li>
-                    </ul>
+                {playerStats.categories ? (
+                  playerStats.categories.map((category, index) => {
+                    const statsData = formatStatsData(category);
+                    if (!statsData) return null;
+                    
+                    // filters out kicking stats for non-kickers/punters
+                    if (category.name === 'kicking' && !['K', 'P'].includes(playerData.position)) {
+                      return null;
+                    }
+                  
+                    return (
+                      <div key={index} className="bg-dark-200 p-4 rounded-lg">
+                        <h4 className="text-lg font-semibold text-blue-400 mb-4 capitalize">
+                          {category.displayName} Statistics
+                        </h4>
+                        
+                        {/* stats by season */}
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="border-b border-gray-600">
+                                <th className="text-left py-2 px-2">Season</th>
+                                <th className="text-left py-2 px-2">Team</th>
+                                {statsData.displayNames.map((label, i) => (
+                                  <th key={i} className="text-center py-2 px-2 text-gray-300">
+                                    {label}
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {statsData.seasons.map((season, seasonIndex) => (
+                                <tr key={seasonIndex} className="border-b border-gray-700 hover:bg-dark-300">
+                                  <td className="py-2 px-2 font-semibold">{season.year}</td>
+                                  <td className="py-2 px-2 text-gray-300">{season.team}</td>
+                                  {season.stats.map((stat, statIndex) => (
+                                    <td key={statIndex} className="text-center py-2 px-2">
+                                      {stat}
+                                    </td>
+                                  ))}
+                                </tr>
+                              ))}
+                              
+                              {/* totals */}
+                              {statsData.totals && statsData.totals.length > 0 && (
+                                <tr className="border-t-2 border-blue-500 bg-blue-900/20 font-semibold">
+                                  <td className="py-2 px-2">Career</td>
+                                  <td className="py-2 px-2 text-gray-300">Totals</td>
+                                  {statsData.totals.map((total, totalIndex) => (
+                                    <td key={totalIndex} className="text-center py-2 px-2">
+                                      {total}
+                                    </td>
+                                  ))}
+                                </tr>
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-gray-400">No statistics available for this player.</p>
                   </div>
                 )}
               </div>
-            )}
-            
-            {positionCategory === 'defensive' && (
-              <div className="space-y-4">
-                {['DE', 'DT', 'NT'].includes(playerData.position) && (
-                  <div className="bg-dark-200 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-red-400 mb-2">Defensive Line Stats</h4>
-                    <ul className="text-gray-300 space-y-1">
-                      <li>• Tackles</li>
-                      <li>• Sacks</li>
-                      <li>• Tackles for Loss</li>
-                      <li>• QB Hits</li>
-                      <li>• Forced Fumbles</li>
-                      <li>• Fumble Recoveries</li>
-                      <li>• Pass Deflections</li>
-                    </ul>
-                  </div>
-                )}
-                
-                {['LB', 'OLB', 'ILB', 'MLB'].includes(playerData.position) && (
-                  <div className="bg-dark-200 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-red-400 mb-2">Linebacker Stats</h4>
-                    <ul className="text-gray-300 space-y-1">
-                      <li>• Tackles</li>
-                      <li>• Sacks</li>
-                      <li>• Tackles for Loss</li>
-                      <li>• Interceptions</li>
-                      <li>• Pass Deflections</li>
-                      <li>• Forced Fumbles</li>
-                      <li>• QB Hits</li>
-                    </ul>
-                  </div>
-                )}
-                
-                {['CB', 'S', 'SS', 'FS', 'DB'].includes(playerData.position) && (
-                  <div className="bg-dark-200 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-red-400 mb-2">Defensive Back Stats</h4>
-                    <ul className="text-gray-300 space-y-1">
-                      <li>• Tackles</li>
-                      <li>• Interceptions</li>
-                      <li>• Pass Deflections</li>
-                      <li>• Forced Fumbles</li>
-                      <li>• Fumble Recoveries</li>
-                      <li>• Touchdowns</li>
-                      <li>• Coverage Rating</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-            )}
-            
-            {positionCategory === 'special' && (
-              <div className="space-y-4">
-                {playerData.position === 'K' && (
-                  <div className="bg-dark-200 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-yellow-400 mb-2">Kicker Stats</h4>
-                    <ul className="text-gray-300 space-y-1">
-                      <li>• Field Goals Made</li>
-                      <li>• Field Goal Attempts</li>
-                      <li>• Field Goal Percentage</li>
-                      <li>• Longest Field Goal</li>
-                      <li>• Extra Points Made</li>
-                      <li>• Extra Point Attempts</li>
-                      <li>• Touchbacks</li>
-                    </ul>
-                  </div>
-                )}
-                
-                {playerData.position === 'P' && (
-                  <div className="bg-dark-200 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-yellow-400 mb-2">Punter Stats</h4>
-                    <ul className="text-gray-300 space-y-1">
-                      <li>• Punts</li>
-                      <li>• Average Yards Per Punt</li>
-                      <li>• Longest Punt</li>
-                      <li>• Punts Inside 20</li>
-                      <li>• Touchbacks</li>
-                      <li>• Net Average</li>
-                    </ul>
-                  </div>
-                )}
-                
-                {['KR', 'PR'].includes(playerData.position) && (
-                  <div className="bg-dark-200 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-yellow-400 mb-2">Return Specialist Stats</h4>
-                    <ul className="text-gray-300 space-y-1">
-                      <li>• Return Attempts</li>
-                      <li>• Return Yards</li>
-                      <li>• Average Return</li>
-                      <li>• Longest Return</li>
-                      <li>• Touchdowns</li>
-                      <li>• Fair Catches</li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-            )}
-            
-            {positionCategory === 'unknown' && (
-              <div className="bg-dark-200 p-4 rounded-lg">
-                <h4 className="text-lg font-semibold text-gray-400 mb-2">General Stats</h4>
-                <ul className="text-gray-300 space-y-1">
-                  <li>• Games Played</li>
-                  <li>• Games Started</li>
-                  <li>• Team Information</li>
-                  <li>• Season Statistics</li>
-                </ul>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-400">No statistics available for this player.</p>
               </div>
             )}
           </div>
