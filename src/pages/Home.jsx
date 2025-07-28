@@ -5,6 +5,7 @@ import {useDebounce} from 'react-use'
 import { getTrendingPlayers, updateSearchCount } from '../appwrite.js'
 import TestFetch from '../components/test.jsx';
 import { Link } from 'react-router-dom';
+import topFantasyPlayers from '../data/topFantasyPlayers.json';
 
 const API_BASE_URL = 'https://sports.core.api.espn.com/v3/sports/football/nfl/athletes';
 
@@ -36,8 +37,38 @@ const Home = () => {
         !item.fullName.includes('[') && 
         !item.fullName.includes(']')
       );
-      setPlayerList(players);
-      return players;
+      
+      // create a map of player names to fantasy data for easier matching
+      const fantasyDataMap = {};
+      Object.values(topFantasyPlayers).forEach(player => {
+        fantasyDataMap[player.name] = player;
+      });
+      
+      // filter to only include players from the fantasy points JSON file
+      const fantasyPlayers = players.filter(player => fantasyDataMap[player.fullName]);
+      
+      // add fantasy points and sort by fantasy points (highest first)
+      const playersWithFantasyPoints = fantasyPlayers.map(player => {
+        const fantasyData = fantasyDataMap[player.fullName];
+        return {
+          ...player,
+          fantasyPoints: fantasyData.fantasyPoints
+        };
+      });
+      
+      // there are 2 lamar jacksons
+      const deduplicatedPlayers = playersWithFantasyPoints.filter(player => {
+        if (player.fullName === "Lamar Jackson") {
+          return player.jersey === "8";
+        }
+        return true; // keep all other players
+      });
+      
+      // sort by fantasy points (highest first)
+      const sortedPlayers = deduplicatedPlayers.sort((a, b) => b.fantasyPoints - a.fantasyPoints);
+      
+      setPlayerList(sortedPlayers);
+      return sortedPlayers;
     } catch (error) {
       console.error(error);
       setErrorMessage('Error fetching players');
@@ -100,11 +131,33 @@ const Home = () => {
   useEffect(() => {
     const loadEverything = async () => {
       const players = await fetchAllPlayers();
-      await loadTrendingPlayers(players);
+      // load trending players using the original full player list, not the filtered fantasy players
+      const fullPlayerList = await fetchFullPlayerList();
+      await loadTrendingPlayers(fullPlayerList);
       setFilteredPlayers(players);
     };
     loadEverything();
   }, []);
+
+  // separate function to get the full player list for trending players
+  const fetchFullPlayerList = async () => {
+    try {
+      const endpoint = `${API_BASE_URL}?limit=20000`;
+      const response = await fetch(endpoint);
+      if (!response.ok) throw new Error('Failed to fetch players');
+      const data = await response.json();
+      const allItems = data.items || [];
+      return allItems.filter(item => 
+        item.active !== false && 
+        item.fullName && 
+        !item.fullName.includes('[') && 
+        !item.fullName.includes(']')
+      );
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  };
 
   return (
     <>

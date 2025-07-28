@@ -1,0 +1,302 @@
+{
+  "14276": {
+    "name": "Lamar Jackson",
+    "fantasyPoints": 430.38,
+    "position": "QB",
+    "team": "Baltimore Ravens"
+  },
+  "15821": {
+    "name": "Ja'Marr Chase",
+    "fantasyPoints": 403.0,
+    "position": "WR",
+    "team": "Cincinnati Bengals"
+  },
+  "2330": {
+    "name": "Josh Allen",
+    "fantasyPoints": 379.04,
+    "position": "QB",
+    "team": "Buffalo Bills"
+  },
+  "16800": {
+    "name": "Joe Burrow",
+    "fantasyPoints": 372.82,
+    "position": "QB",
+    "team": "Cincinnati Bengals"
+  },
+  "14277": {
+    "name": "Baker Mayfield",
+    "fantasyPoints": 365.8,
+    "position": "QB",
+    "team": "Tampa Bay Buccaneers"
+  },
+  "15848": {
+    "name": "Jahmyr Gibbs",
+    "fantasyPoints": 362.9,
+    "position": "RB",
+    "team": "Detroit Lions"
+  },
+  "14278": {
+    "name": "Jayden Daniels",
+    "fantasyPoints": 355.82,
+    "position": "QB",
+    "team": "Washington Commanders"
+  },
+  "15849": {
+    "name": "Saquon Barkley",
+    "fantasyPoints": 355.3,
+    "position": "RB",
+    "team": "Philadelphia Eagles"
+  },
+  "15850": {
+    "name": "Bijan Robinson",
+    "fantasyPoints": 341.7,
+    "position": "RB",
+    "team": "Atlanta Falcons"
+  },
+  "15851": {
+    "name": "Derrick Henry",
+    "fantasyPoints": 336.4,
+    "position": "RB",
+    "team": "Baltimore Ravens"
+  },
+  "14279": {
+    "name": "Jared Goff",
+    "fantasyPoints": 324.46,
+    "position": "QB",
+    "team": "Detroit Lions"
+  },
+  "15823": {
+    "name": "Justin Jefferson",
+    "fantasyPoints": 317.48,
+    "position": "WR",
+    "team": "Minnesota Vikings"
+  },
+  "14280": {
+    "name": "Bo Nix",
+    "fantasyPoints": 317.2,
+    "position": "QB",
+    "team": "Denver Broncos"
+  },
+  "15852": {
+    "name": "Amon-Ra St. Brown",
+    "fantasyPoints": 316.18,
+    "position": "WR",
+    "team": "Detroit Lions"
+  },
+  "14274": {
+    "name": "Jalen Hurts",
+    "fantasyPoints": 315.12,
+    "position": "QB",
+    "team": "Philadelphia Eagles"
+  },
+  "14281": {
+    "name": "Sam Darnold",
+    "fantasyPoints": 307.96,
+    "position": "QB",
+    "team": "Seattle Seahawks"
+  },
+  "15853": {
+    "name": "De'Von Achane",
+    "fantasyPoints": 299.9,
+    "position": "RB",
+    "team": "Miami Dolphins"
+  },
+  "14282": {
+    "name": "Kyler Murray",
+    "fantasyPoints": 297.24,
+    "position": "QB",
+    "team": "Arizona Cardinals"
+  },
+  "15854": {
+    "name": "Josh Jacobs",
+    "fantasyPoints": 293.1,
+    "position": "RB",
+    "team": "Green Bay Packers"
+  },
+  "14283": {
+    "name": "Justin Herbert",
+    "fantasyPoints": 285.4,
+    "position": "QB",
+    "team": "Los Angeles Chargers"
+  },
+  "15855": {
+    "name": "Brian Thomas Jr.",
+    "fantasyPoints": 284.0,
+    "position": "WR",
+    "team": "Jacksonville Jaguars"
+  },
+  "14273": {
+    "name": "Patrick Mahomes",
+    "fantasyPoints": 283.02,
+    "position": "QB",
+    "team": "Kansas City Chiefs"
+  },
+  "15856": {
+    "name": "Drake London",
+    "fantasyPoints": 280.8,
+    "position": "WR",
+    "team": "Atlanta Falcons"
+  },
+  "15857": {
+    "name": "Malik Nabers",
+    "fantasyPoints": 273.6,
+    "position": "WR",
+    "team": "New York Giants"
+  },
+  "15858": {
+    "name": "Kyren Williams",
+    "fantasyPoints": 272.1,
+    "position": "RB",
+    "team": "Los Angeles Rams"
+  },
+  "15813": {
+    "name": "Terry McLaurin",
+    "fantasyPoints": 267.8,
+    "position": "WR",
+    "team": "Washington Commanders"
+  },
+  "14284": {
+    "name": "Brock Purdy",
+    "fantasyPoints": 266.86,
+    "position": "QB",
+    "team": "San Francisco 49ers"
+  },
+  "15859": {
+    "name": "James Cook",
+    "fantasyPoints": 266.7,
+    "position": "RB",
+    "team": "Buffalo Bills"
+  },
+  "14285": {
+    "name": "Geno Smith",
+    "fantasyPoints": 266.0,
+    "position": "QB",
+    "team": "Las Vegas Raiders"
+  },
+  "15860": {
+    "name": "Alvin Kamara",
+    "fantasyPoints": 265.3,
+    "position": "RB",
+    "team": "New Orleans Saints"
+  },
+  "15820": {
+    "name": "CeeDee Lamb",
+    "fantasyPoints": 263.4,
+    "position": "WR",
+    "team": "Dallas Cowboys"
+  },
+  "15861": {
+    "name": "Brock Bowers",
+    "fantasyPoints": 262.7,
+    "position": "TE",
+    "team": "Las Vegas Raiders"
+  },
+  "14286": {
+    "name": "Aaron Rodgers",
+    "fantasyPoints": 256.58,
+    "position": "QB",
+    "team": "Pittsburgh Steelers"
+  },
+  "15862": {
+    "name": "Chase Brown",
+    "fantasyPoints": 255.0,
+    "position": "RB",
+    "team": "Cincinnati Bengals"
+  },
+  "14287": {
+    "name": "Caleb Williams",
+    "fantasyPoints": 254.54,
+    "position": "QB",
+    "team": "Chicago Bears"
+  },
+  "15863": {
+    "name": "James Conner",
+    "fantasyPoints": 253.8,
+    "position": "RB",
+    "team": "Arizona Cardinals"
+  },
+  "15864": {
+    "name": "Jaxon Smith-Njigba",
+    "fantasyPoints": 253.0,
+    "position": "WR",
+    "team": "Seattle Seahawks"
+  },
+  "15809": {
+    "name": "Garrett Wilson",
+    "fantasyPoints": 251.9,
+    "position": "WR",
+    "team": "New York Jets"
+  },
+  "15865": {
+    "name": "Trey McBride",
+    "fantasyPoints": 249.8,
+    "position": "TE",
+    "team": "Arizona Cardinals"
+  },
+  "15866": {
+    "name": "Jonathan Taylor",
+    "fantasyPoints": 244.7,
+    "position": "RB",
+    "team": "Indianapolis Colts"
+  },
+  "15867": {
+    "name": "Bucky Irving",
+    "fantasyPoints": 244.4,
+    "position": "RB",
+    "team": "Tampa Bay Buccaneers"
+  },
+  "15868": {
+    "name": "Chuba Hubbard",
+    "fantasyPoints": 241.6,
+    "position": "RB",
+    "team": "Carolina Panthers"
+  },
+  "15869": {
+    "name": "Aaron Jones Sr.",
+    "fantasyPoints": 241.6,
+    "position": "RB",
+    "team": "Minnesota Vikings"
+  },
+  "15826": {
+    "name": "Davante Adams",
+    "fantasyPoints": 241.3,
+    "position": "WR",
+    "team": "Los Angeles Rams"
+  },
+  "15870": {
+    "name": "Ladd McConkey",
+    "fantasyPoints": 240.9,
+    "position": "WR",
+    "team": "Los Angeles Chargers"
+  },
+  "15871": {
+    "name": "Breece Hall",
+    "fantasyPoints": 240.9,
+    "position": "RB",
+    "team": "New York Jets"
+  },
+  "15804": {
+    "name": "Jerry Jeudy",
+    "fantasyPoints": 240.9,
+    "position": "WR",
+    "team": "Cleveland Browns"
+  },
+  "15872": {
+    "name": "Joe Mixon",
+    "fantasyPoints": 240.5,
+    "position": "RB",
+    "team": "Houston Texans"
+  },
+  "15817": {
+    "name": "Mike Evans",
+    "fantasyPoints": 240.4,
+    "position": "WR",
+    "team": "Tampa Bay Buccaneers"
+  },
+  "15873": {
+    "name": "Courtland Sutton",
+    "fantasyPoints": 240.3,
+    "position": "WR",
+    "team": "Denver Broncos"
+  }
+} 
