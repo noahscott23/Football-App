@@ -34,11 +34,33 @@ function PlayerStats() {
           height: data.displayHeight,
           weight: data.displayWeight,
           experience: data.experience?.years || 0,
-          team: data.team?.name || 'Free Agent',
+          team: data.team?.displayName || data.team?.name || (data.team?.$ref ? 'Team Info Loading...' : 'Free Agent'),
           image: data.headshot?.href || `https://a.espncdn.com/i/headshots/nfl/players/full/${data.id}.png`
         };
 
-        setPlayerData(player);
+        // fixing team 
+        let teamName = 'Free Agent';
+        if (data.team && data.team.$ref) {
+          try {
+            const teamResponse = await fetch(data.team.$ref);
+            if (teamResponse.ok) {
+              const teamData = await teamResponse.json();
+              teamName = teamData.displayName || teamData.name || 'Free Agent';
+            }
+          } catch (error) {
+            console.error('Error fetching team data:', error);
+          }
+        } else {
+          teamName = data.team?.displayName || data.team?.name || 'Free Agent';
+        }
+
+        // update player with team name
+        const playerWithTeam = {
+          ...player,
+          team: teamName
+        };
+
+        setPlayerData(playerWithTeam);
 
         // fetch player statistics
         const statsResponse = await fetch(`https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/${id}/stats`);
@@ -63,7 +85,7 @@ function PlayerStats() {
   const getPositionCategory = (position) => {
     const offensivePositions = ['QB', 'RB', 'WR', 'TE', 'C', 'G', 'T', 'OT', 'OG', 'OL'];
     const defensivePositions = ['DE', 'DT', 'NT', 'LB', 'OLB', 'ILB', 'MLB', 'CB', 'S', 'SS', 'FS', 'DB'];
-    const specialTeamsPositions = ['K', 'P', 'LS', 'KR', 'PR'];
+    const specialTeamsPositions = ['K', 'P', 'LS', 'KR', 'PR', 'PK'];
     
     if (offensivePositions.includes(position)) return 'offensive';
     if (defensivePositions.includes(position)) return 'defensive';
@@ -225,6 +247,11 @@ function PlayerStats() {
                     
                     // filters out kicking stats for non-kickers/punters
                     if (category.name === 'kicking' && !['K', 'P'].includes(playerData.position)) {
+                      return null;
+                    }
+                    
+                    // filters out defensive stats for offensive players
+                    if ((category.name === 'defense' || category.name === 'defensive' || category.name === 'tackles') && ['QB', 'RB', 'WR', 'TE', 'C', 'G', 'T', 'OT', 'OG', 'OL'].includes(playerData.position)) {
                       return null;
                     }
                   
