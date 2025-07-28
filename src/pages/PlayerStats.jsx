@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Spinner from '../components/Spinner.jsx';
+import FantasyCalculator from '../components/FantasyCalculator.jsx';
 
 const API_BASE_URL = 'https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes';
 
@@ -231,6 +232,11 @@ function PlayerStats() {
               </div>
             </div>
           </div>
+
+          {/* calculating fantasy pts */}
+          {playerStats && playerStats.categories && (
+            <FantasyCalculator playerStats={playerStats} playerData={playerData} />
+          )}
 
           
           <div className="bg-dark-100 p-6 rounded-lg">
