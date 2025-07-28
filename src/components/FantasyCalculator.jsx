@@ -42,8 +42,9 @@ const FantasyCalculator = ({ playerStats, playerData }) => {
     
     // map stats to their labels
     const statMap = {};
-    category.labels.forEach((label, index) => {
-      statMap[label] = stat.stats[index];
+    category.labels.forEach((label, index) => {     // remove commas from numbers before storing
+      const value = stat.stats[index];
+      statMap[label] = typeof value === 'string' ? value.replace(/,/g, '') : value;
     });
 
     switch (category.name) {
