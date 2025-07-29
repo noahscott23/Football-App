@@ -1,5 +1,5 @@
 ## DEMO:
-[![Watch the Demo](./thumbnail.png)](https://youtu.be/IAeJN9k-NkU)
+[![Watch the Demo](C:\Users\noahs\OneDrive\Desktop\Summer 2025\React\football-app\public\thumnail.png)](https://youtu.be/IAeJN9k-NkU)
 
 
 # NFL Fantasy Assistant
