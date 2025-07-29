@@ -1,3 +1,4 @@
+## DEMO!
 [![Watch the Demo](https://img.youtube.com/vi/IAeJN9k-NkU/0.jpg)](https://youtu.be/IAeJN9k-NkU)
 
 # NFL Fantasy Assistant
