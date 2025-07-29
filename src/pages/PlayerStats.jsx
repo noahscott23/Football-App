@@ -106,7 +106,8 @@ function PlayerStats() {
         team: stat.teamSlug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
         stats: stat.stats,
         position: stat.position
-      }));
+      }))
+      .sort((a, b) => b.year - a.year); // year descending
     
     return {
       labels: category.labels,

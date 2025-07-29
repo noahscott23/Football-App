@@ -202,7 +202,7 @@ const Home = () => {
             )}
           </section>
           <section className="all-players"> 
-            <h2> All Players</h2>
+            <h2> Top 20 Fantasy Performers of 2024 </h2>
             {isLoading ? (
               <Spinner />
             ) : errorMessage ? (
