@@ -1,5 +1,5 @@
-## DEMO:
-[![Watch the Demo](public/thumnail.png)](https://youtu.be/IAeJN9k-NkU)
+## WATCH THE DEMO:
+[<img src="public/thumnail.png" alt="Watch the Demo" width="400"/>](https://youtu.be/IAeJN9k-NkU)
 
 
 # NFL Fantasy Assistant
