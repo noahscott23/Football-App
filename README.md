@@ -156,7 +156,6 @@ The 2025 projection system considers:
 - **Age Factors** - Position-specific aging curves
 - **Performance Trends** - Multi-year trajectory analysis
 - **Experience Factors** - Rookie and sophomore development
-- **Situational Factors** - Team changes, injuries, system fits
 - **Regression to Mean** - Prevents extreme projections
 
 ### Fantasy Scoring
@@ -187,4 +186,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 - ESPN API for real-time NFL data
 - Appwrite for database services
-- React and Vite communities for excellent tooling
+- React and Vite communities
