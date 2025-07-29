@@ -1,5 +1,5 @@
 ## DEMO:
-[![Watch the Demo](public/thumbnail.png)](https://youtu.be/IAeJN9k-NkU)
+[![Watch the Demo](public/thumnail.png)](https://youtu.be/IAeJN9k-NkU)
 
 
 # NFL Fantasy Assistant
