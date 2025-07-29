@@ -1,3 +1,5 @@
+<div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.loom.com/embed/d6f52e624d334f3498a77f6418a30c6d?sid=789a13b4-421b-4705-8155-2f795e02d8c0" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+
 # NFL Fantasy Assistant
 
 A comprehensive React-based web application for NFL fantasy football enthusiasts. Features an intelligent chatbot assistant, player statistics, 2025 projections, and advanced analytics powered by ESPN's API.
