@@ -13,7 +13,8 @@ const Home = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
   const [searchTerm, setSearchTerm] = useState('');
   
-  const [playerList, setPlayerList] = useState([]);
+  const [playerList, setPlayerList] = useState([]); // ALL players for search
+  const [fantasyPlayerList, setFantasyPlayerList] = useState([]); // Top fantasy players for display
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,23 +32,28 @@ const Home = () => {
       if (!response.ok) throw new Error('Failed to fetch players');
       const data = await response.json();
       const allItems = data.items || [];
-      const players = allItems.filter(item => 
+      
+      // ALL active players for search
+      const allPlayers = allItems.filter(item => 
         item.active !== false && 
         item.fullName && 
         !item.fullName.includes('[') && 
         !item.fullName.includes(']')
       );
       
-      // create a map of player names to fantasy data for easier matching
+      // Set ALL players for search functionality
+      setPlayerList(allPlayers);
+      
+      // Create fantasy data map
       const fantasyDataMap = {};
       Object.values(topFantasyPlayers).forEach(player => {
         fantasyDataMap[player.name] = player;
       });
       
-      // filter to only include players from the fantasy points JSON file
-      const fantasyPlayers = players.filter(player => fantasyDataMap[player.fullName]);
+      // Filter to only fantasy players for display
+      const fantasyPlayers = allPlayers.filter(player => fantasyDataMap[player.fullName]);
       
-      // add fantasy points and sort by fantasy points (highest first)
+      // Add fantasy points and sort
       const playersWithFantasyPoints = fantasyPlayers.map(player => {
         const fantasyData = fantasyDataMap[player.fullName];
         return {
@@ -56,33 +62,38 @@ const Home = () => {
         };
       });
       
-      // there are 2 lamar jacksons
+      // Handle Lamar Jackson duplicate
       const deduplicatedPlayers = playersWithFantasyPoints.filter(player => {
         if (player.fullName === "Lamar Jackson") {
           return player.jersey === "8";
         }
-        return true; // keep all other players
+        return true;
       });
       
-      // sort by fantasy points (highest first)
+      // Sort by fantasy points
       const sortedPlayers = deduplicatedPlayers.sort((a, b) => b.fantasyPoints - a.fantasyPoints);
       
-      setPlayerList(sortedPlayers);
-      return sortedPlayers;
+      // Set fantasy players for display
+      setFantasyPlayerList(sortedPlayers);
+      
+      return allPlayers; // Return ALL players
     } catch (error) {
       console.error(error);
       setErrorMessage('Error fetching players');
       setPlayerList([]);
+      setFantasyPlayerList([]);
       return [];
     } finally {
       setIsLoading(false);
     }
   };
 
-   // filter players from made playerList
+  // Search ALL players, not just fantasy players
   const searchPlayers = (query) => {
-    if (!query) return playerList;
-    return playerList.filter(player => player.fullName.toLowerCase().includes(query.toLowerCase()));
+    if (!query) return fantasyPlayerList; // Show fantasy players when no search
+    return playerList.filter(player => 
+      player.fullName.toLowerCase().includes(query.toLowerCase())
+    );
   };
 
   const [filteredPlayers, setFilteredPlayers] = useState([]);
@@ -94,7 +105,7 @@ const Home = () => {
     if (searchTerm && filtered.length > 0) {
       updateSearchCount(searchTerm, filtered[0]);
     }
-  }, 600, [searchTerm, playerList]);
+  }, 600, [searchTerm, playerList, fantasyPlayerList]);
 
   const fetchPlayers = async () => {
     setFilteredPlayers(searchPlayers(searchTerm));
@@ -130,11 +141,12 @@ const Home = () => {
   // fetch all players, then load trending
   useEffect(() => {
     const loadEverything = async () => {
-      const players = await fetchAllPlayers();
-      // load trending players using the original full player list, not the filtered fantasy players
+      const allPlayers = await fetchAllPlayers();
       const fullPlayerList = await fetchFullPlayerList();
       await loadTrendingPlayers(fullPlayerList);
-      setFilteredPlayers(players);
+      
+      // Show fantasy players by default
+      setFilteredPlayers(fantasyPlayerList);
     };
     loadEverything();
   }, []);
