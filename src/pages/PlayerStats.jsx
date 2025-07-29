@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Spinner from '../components/Spinner.jsx';
 import FantasyCalculator from '../components/FantasyCalculator.jsx';
+import { calculateProjections } from '../utils/projectionCalculator.js';
 
 const API_BASE_URL = 'https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes';
 
@@ -9,6 +10,7 @@ function PlayerStats() {
   const { id } = useParams();
   const [playerData, setPlayerData] = useState(null);
   const [playerStats, setPlayerStats] = useState(null);
+  const [projections, setProjections] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -68,6 +70,14 @@ function PlayerStats() {
         if (statsResponse.ok) {
           const statsData = await statsResponse.json();
           setPlayerStats(statsData);
+          
+          // Calculate 2025 projections
+          try {
+            const projectionData = calculateProjections(playerWithTeam, statsData);
+            setProjections(projectionData);
+          } catch (projError) {
+            console.error('Error calculating projections:', projError);
+          }
         }
       } catch (err) {
         console.error('Error fetching player data:', err);
@@ -237,6 +247,35 @@ function PlayerStats() {
           {/* calculating fantasy pts */}
           {playerStats && playerStats.categories && (
             <FantasyCalculator playerStats={playerStats} playerData={playerData} />
+          )}
+
+          {/* 2025 Projections */}
+          {projections && !projections.error && (
+            <div className="bg-dark-100 p-6 rounded-lg mb-6">
+              <h3 className="text-xl font-semibold mb-4">2025 Projections</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="bg-dark-200 p-4 rounded-lg">
+                  <p className="text-sm text-gray-400">Projected Fantasy Points</p>
+                  <p className="text-2xl font-bold text-green-400">{projections.projectedFantasyPoints}</p>
+                </div>
+                
+              </div>
+
+              <div className="bg-dark-200 p-4 rounded-lg">
+                <h4 className="text-lg font-semibold text-blue-400 mb-3">Projection Factors</h4>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-gray-400">Age:</span>
+                    <span className="ml-2 text-white">{projections.factors.ageFactor}x</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-400">Trend:</span>
+                    <span className="ml-2 text-white">{projections.factors.trendFactor}x</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
 
           

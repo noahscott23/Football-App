@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([
-    { type: 'bot', text: "Hi! I'm your NFL Fantasy Assistant. Ask me about players, get recommendations, or compare stats. Try: 'Recommend me a QB' or 'Compare Lamar Jackson and Josh Allen'" }
+    { type: 'bot', text: "🏈 Welcome to your NFL Fantasy Assistant! I can help you with:\n\n🔮 2025 Projections - \"Predict Lamar Jackson\"\n📊 Player Analysis - \"Tell me about Josh Allen\"\n⚖️ Player Comparisons - \"Compare CMC and Saquon\"\n🎯 Position Rankings - \"Top 5 RBs\"\n💡 Fantasy Strategy - \"Give me advice\"\n🔍 Quick Lookup - Just type any player name!\n\nTry asking about projections, comparisons, or just type a player name!" }
   ]);
   const [input, setInput] = useState('');
   const [isOpen, setIsOpen] = useState(false);

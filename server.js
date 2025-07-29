@@ -3,6 +3,7 @@ import cors from 'cors';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { calculateProjections } from './src/utils/projectionCalculator.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -426,27 +427,58 @@ const getFantasyAdvice = () => {
 // Get help message
 const getHelpMessage = () => {
   return `🏈 NFL Fantasy Assistant - How I Can Help\n\n` +
-         `📋 Available Commands:\n` +
-         `• "Recommend me a QB/RB/WR/TE"\n` +
-         `• "Compare [Player A] and [Player B]"\n` +
+         `🔮 2025 Projections:\n` +
+         `• "Predict [Player Name]" or "[Player] 2025"\n` +
+         `• "Project Lamar Jackson"\n\n` +
+         `📊 Player Analysis:\n` +
          `• "Tell me about [Player Name]"\n` +
-         `• "Give me fantasy advice"\n` +
-         `• "Top 5 QBs/RBs/WRs/TEs"\n` +
          `• Just type a player name\n\n` +
-         `💡 Examples:\n` +
-         `• "Recommend me a QB"\n` +
-         `• "Compare Lamar Jackson and Josh Allen"\n` +
-         `• "Tell me about Christian McCaffrey"\n` +
-         `• "Lamar Jackson"`;
+         `⚖️ Player Comparisons:\n` +
+         `• "Compare [Player A] and [Player B]"\n` +
+         `• "Josh Allen vs Lamar Jackson"\n\n` +
+         `🎯 Position Rankings:\n` +
+         `• "Top 5 QBs/RBs/WRs/TEs"\n` +
+         `• "Recommend me a QB"\n\n` +
+         `💡 Fantasy Strategy:\n` +
+         `• "Give me fantasy advice"\n` +
+         `• "Fantasy strategy tips"\n\n` +
+         `💬 Examples:\n` +
+         `• "Predict Caleb Williams"\n` +
+         `• "Compare Jefferson and Chase"\n` +
+         `• "Top 3 running backs"`;
 };
 
 // Get default response
 const getDefaultResponse = () => {
-  return `🏈 Hi! I'm your NFL Fantasy Assistant. I can help you with:\n\n` +
-         `• Player recommendations and rankings\n` +
-         `• Player comparisons and analysis\n` +
-         `• Fantasy strategy and advice\n\n` +
-         `Try asking: "Recommend me a QB" or "Compare Lamar Jackson and Josh Allen" or just type a player name!`;
+  return `🏈 I didn't quite understand that. Try being more specific!\n\n` +
+         `💡 What I can help with:\n` +
+         `• Player info: "Tell me about Lamar Jackson"\n` +
+         `• 2025 projections: "Predict Josh Allen"\n` +
+         `• Comparisons: "Compare CMC and Saquon"\n` +
+         `• Rankings: "Top 5 QBs"\n` +
+         `• Strategy: "Give me fantasy advice"\n\n` +
+         `🔍 Tip: Use full player names for best results!`;
+};
+
+// Get player projections
+const getPlayerProjections = async (playerName) => {
+  const player = await findPlayerByNameDetailed(playerName);
+  if (!player) return null;
+  
+  try {
+    // Fetch player statistics for projections
+    const statsResponse = await fetch(`https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/${player.id}/stats`);
+    if (!statsResponse.ok) return null;
+    
+    const statsData = await statsResponse.json();
+    
+    // Calculate projections using the imported function
+    const projections = calculateProjections(player, statsData);
+    return projections;
+  } catch (error) {
+    console.error('Error calculating projections:', error);
+    return null;
+  }
 };
 
 // Main response handler
@@ -509,6 +541,30 @@ const getLocalResponse = async (input) => {
   // Help
   if (input.includes('help') || input.includes('what can you do')) {
     return getHelpMessage();
+  }
+  
+  // 2025 projections
+  if (input.includes('projection') || input.includes('2025') || input.includes('predict')) {
+    const playerName = extractPlayerName(input);
+    if (playerName) {
+      const projections = await getPlayerProjections(playerName);
+      if (projections && !projections.error) {
+        return `🔮 2025 Projections for ${playerName}:\n\n` +
+               `Projected Fantasy Points: ${projections.projectedFantasyPoints.toFixed(1)}\n` +
+               `Factors:\n` +
+               `• Age: ${projections.factors.ageFactor}x\n` +
+               `• Trend: ${projections.factors.trendFactor}x`;
+      } else {
+        return `I couldn't calculate 2025 projections for ${playerName}. This might be due to limited statistical data.`;
+      }
+    } else {
+      // No player name found in projection request
+      return `I couldn't find a player name in your request. Please try:\n\n` +
+             `• "Predict Lamar Jackson"\n` +
+             `• "Caleb Williams 2025"\n` +
+             `• "Predict Josh Allen"\n\n` +
+             `Make sure to use the player's full name!`;
+    }
   }
   
   // Just a player name
