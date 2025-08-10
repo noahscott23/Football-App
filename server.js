@@ -12,10 +12,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Load fantasy players data (JSON file for now)
+// Load fantasy players data (JSON file for now) 
 const fantasyPlayersData = JSON.parse(
   readFileSync(join(__dirname, 'src/data/topFantasyPlayers.json'), 'utf8')
 );
+
+app.use(express.static(join(__dirname, 'dist')));
+
+// Catch-all: serve index.html for SPA client-side routing
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, 'dist', 'index.html'));
+});
 
 // Global variables
 let allPlayersData = [];
@@ -638,7 +645,7 @@ const initializeApiData = async () => {
   }
 };
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, async () => {
   console.log(`🚀 NFL Fantasy Assistant Server running on port ${PORT}`);
