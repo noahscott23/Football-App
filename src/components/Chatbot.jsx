@@ -20,7 +20,7 @@ const Chatbot = () => {
   // Local response handler
   const getLocalResponse = async (userInput) => {
     try {
-      const response = await fetch('https://football-app-98n7.onrender.com', {
+      const response = await fetch('https://football-app-98n7.onrender.com/api/chatbot', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userInput }),
