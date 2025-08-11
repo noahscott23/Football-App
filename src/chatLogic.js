@@ -2,7 +2,8 @@ import cors from 'cors';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { calculateProjections } from './src/utils/projectionCalculator.js';
+import fetch from 'node-fetch';
+import { calculateProjections } from './utils/projectionCalculator.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -389,7 +390,7 @@ const recommendPlayersByPosition = (position, count) => {
 
     
 // Main response handler
-const getLocalResponse = async (input) => {
+export const getLocalResponse = async (input) => {
   const inputLower = input.toLowerCase().trim();
   
   // Player recommendations
@@ -483,4 +484,3 @@ const getLocalResponse = async (input) => {
   // Default response
   return getDefaultResponse();
 };
-
