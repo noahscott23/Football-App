@@ -1,12 +1,10 @@
 import { Client, Databases, ID, Query } from 'appwrite';
 
-// ✅ Load env vars
 const DATABASE_ID = import.meta.env.VITE_APPWRITE_DATABASE_ID;
 const COLLECTION_ID = import.meta.env.VITE_APPWRITE_COLLECTION_ID;
 const PROJECT_ID = import.meta.env.VITE_APPWRITE_PROJECT_ID;
 const ENDPOINT = import.meta.env.VITE_APPWRITE_ENDPOINT;
 
-// ✅ Debug log so you can see exactly what’s in prod
 console.log("Appwrite ENV check:", {
   endpoint: ENDPOINT,
   projectId: PROJECT_ID,
@@ -14,12 +12,9 @@ console.log("Appwrite ENV check:", {
   collectionId: COLLECTION_ID
 });
 
-// ✅ Fail early if env vars are missing
 if (!ENDPOINT || !PROJECT_ID || !DATABASE_ID || !COLLECTION_ID) {
   throw new Error("❌ Missing Appwrite environment variables in build!");
 }
-
-// ✅ Create client correctly (removed typo)
 const client = new Client()
   .setEndpoint(ENDPOINT)
   .setProject(PROJECT_ID);
@@ -58,9 +53,7 @@ export const updateSearchCount = async (searchTerm, player) => {
   }
 };
 
-// ------------------------------
-// Get trending players
-// ------------------------------
+//get trending players
 export const getTrendingPlayers = async () => {
   try {
     const result = await database.listDocuments(DATABASE_ID, COLLECTION_ID, [
@@ -70,7 +63,7 @@ export const getTrendingPlayers = async () => {
 
     console.log("Trending players raw:", result);
 
-    // Filter out broken URLs so prod won't crash
+    // Filters broken urls
     return result.documents.map(doc => ({
       ...doc,
       headshot_url: doc.headshot_url || '/fallback-headshot.png'
