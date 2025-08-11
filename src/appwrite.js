@@ -5,8 +5,11 @@ const COLLECTION_ID = import.meta.env.VITE_APPWRITE_COLLECTION_ID;
 const PROJECT_ID = import.meta.env.VITE_APPWRITE_PROJECT_ID;
 
 const client = new Client()
-    .setEndpoint('.setEndpoint(import.meta.env.VITE_APPWRITE_ENDPOINT')
+    .setEndpoint(import.meta.env.VITE_APPWRITE_ENDPOINT)
     .setProject(PROJECT_ID)
+
+console.log('Appwrite endpoint:', import.meta.env.VITE_APPWRITE_ENDPOINT);
+
 
 const database = new Databases(client);
 
