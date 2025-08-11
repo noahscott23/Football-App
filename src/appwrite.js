@@ -9,6 +9,7 @@ const client = new Client()
     .setProject(PROJECT_ID)
 
 console.log('Appwrite endpoint:', import.meta.env.VITE_APPWRITE_ENDPOINT);
+console.log('Project ID:', import.meta.env.VITE_APPWRITE_PROJECT_ID);
 
 
 const database = new Databases(client);
