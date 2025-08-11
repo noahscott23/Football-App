@@ -585,31 +585,15 @@ const getLocalResponse = async (input) => {
 };
 
 // Chat endpoint
-app.post('/api/chat', async (req, res) => {
+app.post('/api/chatbot', async (req, res) => {
   const { message } = req.body;
-
-  if (!message) {
-    return res.status(400).json({ error: 'Message is required' });
-  }
-
-  console.log('Received message:', message);
+  if (!message) return res.status(400).json({ success: false, error: 'No message provided' });
 
   try {
-    const response = await getLocalResponse(message);
-    
-    console.log('Local response generated');
-    res.json({ 
-      reply: response,
-      success: true 
-    });
-  } catch (err) {
-    console.error('Error generating response:', err.message);
-    
-    res.json({ 
-      reply: "Sorry, I'm having trouble processing your request right now. Try asking about player recommendations, comparisons, or fantasy advice!",
-      success: false,
-      error: 'Local response generation failed'
-    });
+    const reply = await getLocalResponse(message);
+    res.json({ success: true, reply });
+  } catch (e) {
+    res.status(500).json({ success: false, error: 'Internal error' });
   }
 });
 
