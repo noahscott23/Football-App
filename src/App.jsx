@@ -9,6 +9,8 @@ import Home from './pages/Home';
 import PlayerStats from './pages/PlayerStats';
 import Chatbot from './components/Chatbot';
 
+inject();
+
 function App() {
   return (
     <Router>
